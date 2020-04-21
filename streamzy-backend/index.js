@@ -2,8 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
-import router from './routes';
+import router from './src/routes';
 import mongoose from 'mongoose';
+import mailer from './src/common/mailer';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cors());
             useCreateIndex: true
         });
         console.log('connected');
+        await mailer.nodemailerInit();
     } catch(e) {
         console.log('Mongo error', e);
     }

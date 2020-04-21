@@ -51,11 +51,4 @@ Account.statics.register = async function(newUser) {
     }
 }
 
-Account.pre('save', next => {
-    if(this.middlename === null) {
-        this.middlename = '';
-    }
-    next();
-});
-
 export default mongoose.model('Account', Account);

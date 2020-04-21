@@ -1,9 +1,11 @@
-import Account from './models/Account';
-import Token from './models/Token';
+import Account from '../../../../models/Account';
+import Token from '../../../../models/Token';
 import { v4 as uuid } from 'uuid';
 import status from 'http-status';
+import mailer from '../../../common/mailer';
 
 const login = async (req, res) => {
+    console.log('in login');
     let { username, password } = req.body;
     if(!username || !password ) {
         console.log('No username or password while logging in');
@@ -53,11 +55,14 @@ const login = async (req, res) => {
 }
 
 const signup = async (req, res) => {
+    console.log('signup');
     const { username, password, firstname, lastname, email } = req.body;
     const newUser = new Account({username, password, firstname, lastname, email});
     try {
         await Account.register(newUser);
         console.log('New user added successfully');
+        console.log('sending mail');
+        await sendRegistrationEmail({to: email, subject: 'Registration successfull'});
         res.status(status.OK);
         return res.json({
             status: 'success',
@@ -72,6 +77,17 @@ const signup = async (req, res) => {
             message: 'Internal server error',
             data: {}
         });
+    }
+}
+
+const sendRegistrationEmail = async ({to, subject}) => {
+    try {
+        const emailBody = `Welcome to Streamzy`;
+        await mailer.sendMail({from: 'Streamzy', to, subject, body: emailBody});
+        return Promise.resolve();
+    } catch (e) {
+        console.log('error when sending mail');
+        return Promise.reject(e);
     }
 }
 
