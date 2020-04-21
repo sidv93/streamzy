@@ -14,10 +14,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-// Add new user if user sid does not exist
-
 (async () => {
-    const uri = "mongodb+srv://admin:xyzzyspoon%40%24@streamzy0-kn0ex.gcp.mongodb.net/streamzy?retryWrites=true&w=majority";
+    const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@streamzy0-kn0ex.gcp.mongodb.net/streamzy?retryWrites=true&w=majority`;
     try {
         await mongoose.connect(uri,{
             useNewUrlParser: true,
