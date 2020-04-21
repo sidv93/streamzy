@@ -26,6 +26,7 @@
     "express": "^4.17.1",
     "http-status": "^1.4.2",
     "mongoose": "^5.9.9",
+    "nodemailer": "^6.4.6",
     "uuid": "^7.0.3"
   }
 }
