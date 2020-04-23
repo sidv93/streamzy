@@ -11,13 +11,10 @@ const Account = new Schema({
         unique: true
     },
     password: {
-        type: String
-    },
-    firstname: {
         type: String,
         required: true
     },
-    lastname: {
+    name: {
         type: String,
         required: true
     },
