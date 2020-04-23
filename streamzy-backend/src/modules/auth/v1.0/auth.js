@@ -1,11 +1,10 @@
-import Account from '../../../../models/Account';
-import Token from '../../../../models/Token';
+import Account from '../../../models/Account';
+import Token from '../../../models/Token';
 import { v4 as uuid } from 'uuid';
 import status from 'http-status';
 import mailer from '../../../common/mailer';
 
 const login = async (req, res) => {
-    console.log('in login');
     let { username, password } = req.body;
     if(!username || !password ) {
         console.log('No username or password while logging in');
@@ -40,6 +39,7 @@ const login = async (req, res) => {
         res.status(status.OK);
         return res.json({
             status: 'success',
+            message: 'Authentication successfull',
             data: {authToken, username}
         });
     } catch(e) {
@@ -48,16 +48,15 @@ const login = async (req, res) => {
 
         return res.json({
             status: 'error',
-            message: 'Internal server error',
+            message: 'Error during authentication',
             data: {}
         });
     }
 }
 
 const signup = async (req, res) => {
-    console.log('signup');
-    const { username, password, firstname, lastname, email } = req.body;
-    const newUser = new Account({username, password, firstname, lastname, email});
+    const { username, password, name, email } = req.body;
+    const newUser = new Account({username, password, name, email});
     try {
         await Account.register(newUser);
         console.log('New user added successfully');
@@ -66,6 +65,7 @@ const signup = async (req, res) => {
         res.status(status.OK);
         return res.json({
             status: 'success',
+            message: 'Registration successfull',
             data: {username}
         });
     } catch(e) {
@@ -74,7 +74,7 @@ const signup = async (req, res) => {
 
         return res.json({
             status: 'error',
-            message: 'Internal server error',
+            message: 'Error during registration',
             data: {}
         });
     }
